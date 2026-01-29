@@ -27,15 +27,18 @@
     <div id="dashboardSection" class="dashboard">
         <header class="header">
             <div class="header-left">
-                <h1>📊 Dashboard de Vigilancia IAAS</h1>
-                <p>Clínica Infantil Colsubsidio</p>
+                <img src="https://www.colsubsidio.com/themes/flavstart/images/logo-colsubsidio.svg" alt="Logo Colsubsidio">
+                <div>
+                    <h1>Dashboard Vigilancia IAAS</h1>
+                    <p>Clínica Infantil Colsubsidio</p>
+                </div>
             </div>
             <div class="header-right">
                 <div class="realtime-indicator">
                     <span class="realtime-dot"></span>
                     En tiempo real
                 </div>
-                <a href="index.html" class="btn btn-white">➕ Nuevo reporte</a>
+                <a href="index.html" class="btn btn-secondary">➕ Nuevo reporte</a>
                 <button onclick="logout()" class="btn btn-outline">Salir</button>
             </div>
         </header>
@@ -98,9 +101,9 @@
                         <label>Buscar</label>
                         <input type="text" id="filterBuscar" placeholder="Nombre, ID, cama...">
                     </div>
-                    <div class="filter-group">
+                    <div class="filter-group" style="display: flex; gap: 8px; align-items: flex-end;">
                         <button class="btn btn-primary" onclick="applyFilters()">Filtrar</button>
-                        <button class="btn btn-outline" onclick="clearFilters()" style="margin-left: 0.5rem;">Limpiar</button>
+                        <button class="btn btn-outline" onclick="clearFilters()" style="border: 2px solid var(--gris); color: var(--azul-oscuro);">Limpiar</button>
                     </div>
                 </div>
             </div>
@@ -125,7 +128,7 @@
             <div class="table-card">
                 <div class="table-header">
                     <h2>Casos reportados</h2>
-                    <span id="countDisplay" style="color: var(--text-light); font-size: 0.875rem;"></span>
+                    <span id="countDisplay"></span>
                 </div>
                 <div class="table-wrapper">
                     <table>
@@ -198,7 +201,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-outline" onclick="closeModal()">Cancelar</button>
+                <button class="btn btn-outline" onclick="closeModal()" style="border: 2px solid var(--gris); color: var(--azul-oscuro);">Cancelar</button>
                 <button class="btn btn-primary" onclick="guardarCambios()">Guardar cambios</button>
             </div>
         </div>

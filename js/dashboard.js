@@ -141,7 +141,7 @@ function updateEstadosChart() {
         labels: ['Pendiente', 'En revisión', 'Confirmado', 'Descartado'],
         datasets: [{
             data: [estados.pendiente, estados.en_revision, estados.confirmado, estados.descartado],
-            backgroundColor: ['#F6AD55', '#4299E1', '#FC8181', '#48BB78'],
+            backgroundColor: ['#FDB913', '#17a2b8', '#dc3545', '#28a745'],
             borderWidth: 0
         }]
     };
@@ -208,7 +208,7 @@ function updateSospechasChart() {
         labels: labels,
         datasets: [{
             data: Object.values(sospechasCounts),
-            backgroundColor: '#6B46C1',
+            backgroundColor: '#003DA5',
             borderRadius: 4
         }]
     };
