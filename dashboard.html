@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Vigilancia IAAS</title>
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📊</text></svg>">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <!-- LOGIN -->
+    <div id="loginSection" class="login-container">
+        <div class="login-card">
+            <div class="icon">🔐</div>
+            <h1>Dashboard de Vigilancia</h1>
+            <p>Ingrese la contraseña para acceder al panel de seguimiento</p>
+            <form id="loginForm">
+                <input type="password" id="passwordInput" placeholder="Contraseña" autofocus>
+                <p id="loginError" class="login-error">Contraseña incorrecta</p>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Ingresar</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- DASHBOARD -->
+    <div id="dashboardSection" class="dashboard">
+        <header class="header">
+            <div class="header-left">
+                <h1>📊 Dashboard de Vigilancia IAAS</h1>
+                <p>Clínica Infantil Colsubsidio</p>
+            </div>
+            <div class="header-right">
+                <div class="realtime-indicator">
+                    <span class="realtime-dot"></span>
+                    En tiempo real
+                </div>
+                <a href="index.html" class="btn btn-white">➕ Nuevo reporte</a>
+                <button onclick="logout()" class="btn btn-outline">Salir</button>
+            </div>
+        </header>
+
+        <main class="main-container">
+            <!-- ESTADÍSTICAS -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon purple">📋</div>
+                    <div class="stat-content">
+                        <h3 id="totalReportes">0</h3>
+                        <p>Total reportes</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon orange">⏳</div>
+                    <div class="stat-content">
+                        <h3 id="pendientes">0</h3>
+                        <p>Pendientes</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon red">⚠️</div>
+                    <div class="stat-content">
+                        <h3 id="confirmados">0</h3>
+                        <p>IAAS confirmadas</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon green">✓</div>
+                    <div class="stat-content">
+                        <h3 id="descartados">0</h3>
+                        <p>Descartados</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FILTROS -->
+            <div class="filters-card">
+                <div class="filters-grid">
+                    <div class="filter-group">
+                        <label>Estado</label>
+                        <select id="filterEstado">
+                            <option value="">Todos</option>
+                            <option value="pendiente">Pendiente</option>
+                            <option value="en_revision">En revisión</option>
+                            <option value="confirmado">Confirmado</option>
+                            <option value="descartado">Descartado</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label>Desde</label>
+                        <input type="date" id="filterFechaDesde">
+                    </div>
+                    <div class="filter-group">
+                        <label>Hasta</label>
+                        <input type="date" id="filterFechaHasta">
+                    </div>
+                    <div class="filter-group">
+                        <label>Buscar</label>
+                        <input type="text" id="filterBuscar" placeholder="Nombre, ID, cama...">
+                    </div>
+                    <div class="filter-group">
+                        <button class="btn btn-primary" onclick="applyFilters()">Filtrar</button>
+                        <button class="btn btn-outline" onclick="clearFilters()" style="margin-left: 0.5rem;">Limpiar</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- GRÁFICOS -->
+            <div class="charts-grid">
+                <div class="chart-card">
+                    <h3>Reportes por estado</h3>
+                    <div class="chart-container">
+                        <canvas id="chartEstados"></canvas>
+                    </div>
+                </div>
+                <div class="chart-card">
+                    <h3>Tipo de sospecha</h3>
+                    <div class="chart-container">
+                        <canvas id="chartSospechas"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TABLA DE CASOS -->
+            <div class="table-card">
+                <div class="table-header">
+                    <h2>Casos reportados</h2>
+                    <span id="countDisplay" style="color: var(--text-light); font-size: 0.875rem;"></span>
+                </div>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Paciente</th>
+                                <th>Cama</th>
+                                <th>Sospecha</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="casosTableBody">
+                            <!-- Se llena dinámicamente -->
+                        </tbody>
+                    </table>
+                </div>
+                <div id="emptyState" class="empty-state" style="display: none;">
+                    <div class="icon">📭</div>
+                    <p>No hay casos que coincidan con los filtros</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- MODAL DE DETALLE -->
+    <div id="detalleModal" class="modal-overlay">
+        <div class="modal">
+            <div class="modal-header">
+                <h2>Detalle del caso</h2>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="detail-grid" id="detalleContent">
+                    <!-- Se llena dinámicamente -->
+                </div>
+
+                <!-- Formulario de seguimiento -->
+                <div class="seguimiento-form">
+                    <h3>Gestión del caso</h3>
+                    <div class="form-group">
+                        <label>Estado del caso</label>
+                        <select id="modalEstado">
+                            <option value="pendiente">Pendiente</option>
+                            <option value="en_revision">En revisión</option>
+                            <option value="confirmado">Confirmado IAAS</option>
+                            <option value="descartado">Descartado</option>
+                        </select>
+                    </div>
+
+                    <div id="clasificacionGroup" class="clasificacion-group">
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label>Clasificación de IAAS</label>
+                            <select id="modalClasificacion">
+                                <option value="">Seleccione tipo de IAAS</option>
+                                <option value="ISQ">Infección del sitio quirúrgico (ISQ)</option>
+                                <option value="ITS-AC">Infección torrente sanguíneo - catéter (ITS-AC)</option>
+                                <option value="NAV">Neumonía asociada a ventilador (NAV)</option>
+                                <option value="ITU-AC">Infección urinaria - catéter (ITU-AC)</option>
+                                <option value="otra">Otra IAAS</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Notas de seguimiento</label>
+                        <textarea id="modalNotas" placeholder="Agregue notas sobre el caso..."></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeModal()">Cancelar</button>
+                <button class="btn btn-primary" onclick="guardarCambios()">Guardar cambios</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- LOADING OVERLAY -->
+    <div id="loadingOverlay" class="loading-overlay">
+        <div class="spinner-large"></div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/config.js"></script>
+    <script src="js/dashboard.js"></script>
+</body>
+</html>

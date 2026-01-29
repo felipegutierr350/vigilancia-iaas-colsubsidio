@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vigilancia Activa IAAS - Clínica Infantil Colsubsidio</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏥</text></svg>">
+</head>
+<body>
+    <header class="header">
+        <h1>Vigilancia Activa de IAAS</h1>
+        <p>Clínica Infantil Colsubsidio</p>
+    </header>
+
+    <main class="container">
+        <!-- Mensaje de alerta -->
+        <div id="alertMessage" class="alert"></div>
+
+        <form id="reporteForm" class="form-card">
+            <!-- Sección: Datos del Paciente -->
+            <div class="form-section">
+                <h2 class="section-title">
+                    <span class="icon">👤</span>
+                    Datos del Paciente
+                </h2>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="cama">Cama <span class="required">*</span></label>
+                        <input type="text" id="cama" name="cama" placeholder="Ej: UCI-P-05" required>
+                        <span class="error-message">Este campo es obligatorio</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="identificacion">Identificación <span class="required">*</span></label>
+                        <input type="text" id="identificacion" name="identificacion" placeholder="Documento de identidad" required>
+                        <span class="error-message">Este campo es obligatorio</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="nombre_paciente">Nombre del paciente <span class="required">*</span></label>
+                    <input type="text" id="nombre_paciente" name="nombre_paciente" placeholder="Nombre completo" required>
+                    <span class="error-message">Este campo es obligatorio</span>
+                </div>
+
+                <div class="form-group">
+                    <label for="fecha_ingreso">Fecha de ingreso <span class="required">*</span></label>
+                    <input type="date" id="fecha_ingreso" name="fecha_ingreso" required>
+                    <span class="error-message">Este campo es obligatorio</span>
+                </div>
+
+                <div id="diasEstanciaBox" class="info-box" style="display: none;">
+                    <p>Días de estancia hospitalaria: <span id="diasEstancia" class="dias-estancia">0</span></p>
+                </div>
+            </div>
+
+            <!-- Sección: Características -->
+            <div class="form-section">
+                <h2 class="section-title">
+                    <span class="icon">📋</span>
+                    Características del paciente
+                </h2>
+                <p style="font-size: 0.875rem; color: var(--text-light); margin-bottom: 1rem;">
+                    Seleccione al menos una característica <span class="required">*</span>
+                </p>
+                <div id="caracteristicasGroup" class="checkbox-group">
+                    <!-- Se genera dinámicamente -->
+                </div>
+                <span id="caracteristicasError" class="error-message">Seleccione al menos una opción</span>
+            </div>
+
+            <!-- Sección: Sospecha de Deterioro -->
+            <div class="form-section">
+                <h2 class="section-title">
+                    <span class="icon">⚠️</span>
+                    Sospecha de deterioro infeccioso por
+                </h2>
+                <p style="font-size: 0.875rem; color: var(--text-light); margin-bottom: 1rem;">
+                    Seleccione todas las que apliquen <span class="required">*</span>
+                </p>
+                <div id="sospechaGroup" class="checkbox-group">
+                    <!-- Se genera dinámicamente -->
+                </div>
+                <span id="sospechaError" class="error-message">Seleccione al menos una opción</span>
+            </div>
+
+            <!-- Sección: Descripción -->
+            <div class="form-section">
+                <h2 class="section-title">
+                    <span class="icon">📝</span>
+                    Descripción del evento
+                </h2>
+
+                <div class="form-group">
+                    <label for="descripcion_evento">Descripción breve <span class="required">*</span></label>
+                    <textarea id="descripcion_evento" name="descripcion_evento"
+                              placeholder="Describa brevemente el evento o hallazgo clínico que motivó el reporte..."
+                              required></textarea>
+                    <span class="error-message">Este campo es obligatorio</span>
+                </div>
+            </div>
+
+            <!-- Sección: Quien Registra -->
+            <div class="form-section">
+                <h2 class="section-title">
+                    <span class="icon">👨‍⚕️</span>
+                    Información del registro
+                </h2>
+
+                <div class="form-group">
+                    <label for="quien_registra">Nombre de quien registra <span class="required">*</span></label>
+                    <input type="text" id="quien_registra" name="quien_registra"
+                           placeholder="Su nombre completo" required>
+                    <span class="error-message">Este campo es obligatorio</span>
+                </div>
+            </div>
+
+            <!-- Botón de envío -->
+            <button type="submit" class="btn btn-primary" id="submitBtn">
+                <span class="btn-text">Enviar Reporte</span>
+                <span class="loading">
+                    <span class="spinner"></span>
+                    Enviando...
+                </span>
+            </button>
+        </form>
+
+        <footer class="footer">
+            <p>Control de Infecciones - Clínica Infantil Colsubsidio</p>
+            <p>Desarrollado por Dr. Iván Felipe Gutiérrez Tobar</p>
+        </footer>
+    </main>
+
+    <!-- Modal de éxito -->
+    <div id="successModal" class="modal-overlay">
+        <div class="modal">
+            <div class="modal-icon">✓</div>
+            <h2>¡Reporte enviado!</h2>
+            <p>El caso ha sido registrado exitosamente y será revisado por el equipo de epidemiología.</p>
+            <button class="btn btn-primary" onclick="closeModalAndReset()">Registrar otro caso</button>
+        </div>
+    </div>
+
+    <!-- Link al Dashboard -->
+    <a href="dashboard.html" class="dashboard-link" title="Dashboard de seguimiento">
+        📊
+    </a>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/config.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
