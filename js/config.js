@@ -6,7 +6,7 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
 const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 // Contraseña simple para el dashboard (para MVP)
-const DASHBOARD_PASSWORD = 'iaas2026';
+const DASHBOARD_PASSWORD = '2026';
 
 // Opciones de características
 const CARACTERISTICAS_OPTIONS = [
