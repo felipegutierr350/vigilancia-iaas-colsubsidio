@@ -184,7 +184,7 @@ async function handleSubmit(e) {
 
     // Recopilar datos
     const formData = {
-        cama: document.getElementById('cama').value.trim(),
+        cama: document.getElementById('servicio').value,
         nombre_paciente: document.getElementById('nombre_paciente').value.trim(),
         identificacion: document.getElementById('identificacion').value.trim(),
         fecha_ingreso: document.getElementById('fecha_ingreso').value,

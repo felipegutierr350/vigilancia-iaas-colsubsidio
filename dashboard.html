@@ -27,7 +27,7 @@
     <div id="dashboardSection" class="dashboard">
         <header class="header">
             <div class="header-left">
-                <img src="https://www.colsubsidio.com/themes/flavstart/images/logo-colsubsidio.svg" alt="Logo Colsubsidio">
+                <img src="Logo_Colsubsidio.png" alt="Logo Colsubsidio">
                 <div>
                     <h1>Dashboard Vigilancia IAAS</h1>
                     <p>Clínica Infantil Colsubsidio</p>
@@ -136,7 +136,7 @@
                             <tr>
                                 <th>Fecha</th>
                                 <th>Paciente</th>
-                                <th>Cama</th>
+                                <th>Servicio</th>
                                 <th>Sospecha</th>
                                 <th>Estado</th>
                                 <th>Acciones</th>
@@ -171,12 +171,11 @@
                 <div class="seguimiento-form">
                     <h3>Gestión del caso</h3>
                     <div class="form-group">
-                        <label>Estado del caso</label>
+                        <label>Acción</label>
                         <select id="modalEstado">
-                            <option value="pendiente">Pendiente</option>
-                            <option value="en_revision">En revisión</option>
-                            <option value="confirmado">Confirmado IAAS</option>
-                            <option value="descartado">Descartado</option>
+                            <option value="pendiente">Pendiente de revisión</option>
+                            <option value="descartado">Se descarta - No es IAAS</option>
+                            <option value="confirmado">Se confirma - Es IAAS</option>
                         </select>
                     </div>
 

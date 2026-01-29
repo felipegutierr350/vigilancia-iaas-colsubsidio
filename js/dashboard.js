@@ -373,7 +373,7 @@ function verDetalle(id) {
 
     detalleContent.innerHTML = `
         <div class="detail-item">
-            <label>Cama</label>
+            <label>Servicio</label>
             <p>${caso.cama}</p>
         </div>
         <div class="detail-item">
